@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ng-Mongo, from Tekpub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Le styles -->
+  <link href="/stylesheets/bootstrap.css" rel="stylesheet">
+  <link href="/stylesheets/overrides.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
+  </style>
+  <link href="/stylesheets/bootstrap-responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="/">Angular::Mongo</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="active"><a href="/">Home</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <script type="text/ng-template" id="list-template.html">
+    <breadcrumbs></breadcrumbs>
+    <div class="row">
+      <div class="span9">
+        <table class="table table-striped">
+          <tbody>
+          <tr ng-repeat="item in items">
+            <td>
+              <h4>
+                <a href="{{item | mongolink:'name'}}" >{{item.name}}</a>
+              </h4>
+            </td>
+            <td>
+              <delete-button action="removeItem(item)"></delete-button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="span3">
+        <input type="text" ng-model="newItemName">
+        <add-button text="Add" action="addItem()"></add-button>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="document-template.html">
+    <breadcrumbs></breadcrumbs>
+    <div class="row">
+      <div class="span9" id="document-list">
+        <ul >
+          <li class="document pull-left" ng-repeat="doc in documents | filter:documentName">
+            <p>
+              <a href="{{doc | mongolink:'id'}}">{{doc | descriptivename}}</a>
+            </p>
+          </li>
+        </ul>
+      </div>
+      <div class="span3">
+        <h3><a href="{{null | mongolink}}">Add Document</a></h3>
+        <aside class="well">
+          <label>Filter Documents</label>
+          <input type="text" ng-model="documentName">
+        </aside>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="editor-template.html">
+    <breadcrumbs></breadcrumbs>
+    <div class="row">
+      <div id="ace-editor" class="span9"></div>
+      <div class="span3 pull-right">
+        <add-button text="Save" action="saveDocument()"></add-button>
+        <delete-button text = "Delete" action="deleteDocument()"></delete-button>
+      </div>
+    </div>
+  </script>
+
+
+  <ng-view></ng-view>
+ </div>
+
+<script src="/javascripts/vendor/jquery.js"></script>
+<script src="/javascripts/vendor/underscore.js"></script>
+<script src="/javascripts/vendor/angular/angular.js"></script>
+<script src="/javascripts/vendor/angular/angular-resource.min.js"></script>
+<script src="/javascripts/tekpub/ng-bootstrap.js"></script>
+<script src="/javascripts/vendor/ace/ace.js"></script>
+<script src="/javascripts/vendor/ace/mode-json.js"></script>
+<script src="/javascripts/ng-mongo/app2.js"></script>
+
+<script type="text/javascript">
+  $.get("/mongo-api", function(api){
+      console.log(api);
+    Tekpub.MongoApp.start("ngMongo", api);
+  })
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
